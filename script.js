@@ -60,7 +60,7 @@ aiHandSymbols.set('scissors', `
 
 
 //STARTS GAME
-function start(){
+const start=()=>{
     //checks if any one has won the best of 5
     if(playerScore>2){
         aiScore=0
@@ -90,7 +90,7 @@ function start(){
     playerEntry()
 }
 //takes an input on a while loop stops when it is valid
-function playerEntry(){
+const playerEntry=()=>{
     let isValid=false
     let playerSelection
     while(!isValid){
@@ -111,7 +111,7 @@ function playerEntry(){
 
 }
 //displays the hand symbols and handles the winning and losing logic
-function play_round (difficulty,playerChoice){
+const play_round= (difficulty,playerChoice)=>{
     let aiWin=false;
     let aiSelection='rock'
     //generates a random number between 1-100 inclusive
