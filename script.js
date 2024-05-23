@@ -3,6 +3,7 @@
 let playerScore=0
 let aiScore=0
 let difficulty=5
+const difficultyIncrease=10
 let initialLevel=true;
 const playerHandSymbols = new Map();
 playerHandSymbols.set('rock', `
@@ -32,12 +33,12 @@ playerHandSymbols.set('scissors', `
 );
 const aiHandSymbols = new Map();
 aiHandSymbols.set('rock', `
-     _______
+    _______
    (____   '---
   (_____)
- (_____)
-  (____)
-   (___)__.---
+  (_____)
+   (____)
+    (___)__.---
 `);
 aiHandSymbols.set('paper', `
        _______
@@ -63,18 +64,18 @@ function start(){
     if(playerScore>2){
         aiScore=0
         playerScore=0
-        difficulty+=5
+        difficulty+=difficultyIncrease
         if(difficulty>100)difficulty=100
-        console.log(`win message , you are on lvl ${difficulty/5}`)
+        console.log(`win message , you are on lvl ${difficulty/difficultyIncrease}`)
     }else if(aiScore>2){
         aiScore=0
         playerScore=0
-        difficulty-=5
+        difficulty-=difficultyIncrease
         if(difficulty<5){
             difficulty=5;
             console.log(`how on earth can you not beat this lvl!`)
         }
-        else console.log(`lose message, back you go to lvl ${difficulty/5}`)
+        else console.log(`lose message, back you go to lvl ${difficulty/difficultyIncrease}`)
         
     }
     if(initialLevel){
@@ -127,8 +128,7 @@ function play_round (difficulty,playerChoice){
         break;
         case false:
             const drawOrLose = Math.floor(Math.random() * 100) + 1;
-            console.log(drawOrLose)
-            if(drawOrLose>77){
+            if(drawOrLose>55){
                 aiSelection=playerChoice
                 console.log(`we have a draw ${playerHandSymbols.get(playerChoice)}=${aiHandSymbols.get(aiSelection)}`)
                 console.log(`Player: ${playerScore}, AI:${aiScore}`)
