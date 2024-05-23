@@ -1,46 +1,103 @@
-const game={
-    playerScore:0,
-    aiScore:0,
-    //this will indicate the change in % the ai has to beat the player. maybe the player can select a diffuclty or
-    // the difficulty can increase everytime the player wins?
-    difficulty:5,
-    // setDifficulty:function(){
-    //     //prompt player to enter a number between 1-100 and set it to the difficulty.
-    //     //check if entry is an int
-    //     //this.reset_state()
-    // },
-    reset_state:function(){
-        //check for a score higher than 2
-        // if(playerScore>2){
-        //     difficulty+=5
-        //     display message and level level=this.difficulty/5
-        // }if(aiScore>2){
-        //     difficulty-=5 round up to 5
-        //     display message and level level=this.difficulty/5
-        // }
-        //display game messages
-        //start game logic loop
-        this.playerEntry()
-    },
-    playerEntry:function(){
-        //checks if it is a valid entry. if it is not take it as the player missed there chance to play this turn.(this logic could be changed)
-        const playerSelection=prompt("please type r,p or s for rock paper siccisors")
-        if(playerSelection==='P'||playerSelection==='p'||playerSelection==='S'||playerSelection==='s'||playerSelection==='r'||playerSelection==='R'){
-            //valid entry 
-            //play_round(this.difficulty,playerSelection)
-        }else{
-            //cpu auto wins selects random r,p or s and player gets a x
+
+
+let playerScore=0
+let aiScore=0
+let difficulty=5
+
+
+
+function start(){
+    if(playerScore>2){
+        aiScore=0
+        playerScore=0
+        difficulty+=5
+        if(difficulty>100)difficulty=100
+        console.log(`win message , you are on lvl ${difficulty/5}`)
+    }else if(aiScore>2){
+        aiScore=0
+        playerScore=0
+        difficulty-=5
+        if(difficulty<5){
+            difficulty=5;
+            console.log(`how on earth can you not eat this lvl!`)
         }
+        else console.log(`lose message, back you go to lvl ${difficulty/5}`)
         
-    },
-    play_round:function(difficulty,playerChoice){
-        //uses difficulty to decide if its going to win. if diffculty is 1 it has 1% chance of winning
-        //can do this by picking a random number 1-100 if it is the selected difficulty or less the cpu wins.
-        //if it is higher than selected diffuclty or equalto it. 50% chance to draw (this logic could change)
-        //display message
-        //increment score
-        //this.reset_state()
-    },
+    }
+    console.log(`LEVEL ${difficulty/5}`)
+    playerEntry()
+}
+function playerEntry(){
+    let isValid=false
+    let playerSelection
+    while(!isValid){
+        const playerInput=prompt("please type either rock paper or scissors")
+        const lowerCaseInput=playerInput.toLowerCase()
+        if(typeof lowerCaseInput==='string' ){  
+            if(lowerCaseInput==='rock'||lowerCaseInput==='paper'||lowerCaseInput==='scissors'){
+                playerSelection=lowerCaseInput
+                isValid=true
+            }else{
+                alert(`not a valid input`)    
+            }
+        }
+    }
+    play_round(difficulty,playerSelection)
+
+}
+function play_round (difficulty,playerChoice){
+    let aiWin=false;
+    let aiSelection='rock'
+    const randomNumber = Math.floor(Math.random() * 100) + 1;
+   
+    if(randomNumber<=difficulty) aiWin=true
+    switch(aiWin){
+        case true:
+            switch(playerChoice){
+                case 'rock':
+                        aiSelection='paper'
+                break;
+                case'paper':
+                        aiSelection='scissors'
+                break;
+                case 'scissors':
+                    aiSelection='rock'
+                break;
+            } 
+            console.log(`ai wins ${playerChoice}<${aiSelection}`) 
+            aiScore++
+            console.log(`Player: ${playerScore}, AI:${aiScore}`) 
+        break;
+        case false:
+            const drawOrLose = Math.floor(Math.random() * 100) + 1;
+            console.log(drawOrLose)
+            if(drawOrLose>77){
+                aiSelection=playerChoice
+                console.log(`we have a draw ${playerChoice}=${aiSelection}`)
+                console.log(`Player: ${playerScore}, AI:${aiScore}`)
+            }else{
+                switch(playerChoice){
+                    case 'rock':
+                            aiSelection='scissors'
+                    break;
+                    case'paper':
+                            aiSelection='rock'
+                    break;
+                    case 'scissors':
+                        aiSelection='paper'
+                    break;
+                } 
+                console.log(`player wins ${playerChoice}>${aiSelection}`);
+                 playerScore++
+                console.log(`Player: ${playerScore}, AI:${aiScore}`)
+            }
+        break;
+    }
+   start()
+
 }
 
-game.reset_state();
+
+
+
+start()
