@@ -87,7 +87,7 @@ const start=()=>{
         initialLevel=false
     }
     
-    playerEntry()
+    play_round(difficulty,playerEntry())
 }
 //takes an input on a while loop stops when it is valid
 const playerEntry=()=>{
@@ -107,7 +107,8 @@ const playerEntry=()=>{
             }
         }
     }
-    play_round(difficulty,playerSelection)
+    return playerSelection
+    
 
 }
 //displays the hand symbols and handles the winning and losing logic
