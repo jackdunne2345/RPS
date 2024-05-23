@@ -94,7 +94,9 @@ function playerEntry(){
     let isValid=false
     let playerSelection
     while(!isValid){
+        //NEED TO HANDLE NO ENTRY 
         const playerInput=prompt("please type either rock paper or scissors")
+    
         const lowerCaseInput=playerInput.toLowerCase()
         if(typeof lowerCaseInput==='string' ){  
             if(lowerCaseInput==='rock'||lowerCaseInput==='paper'||lowerCaseInput==='scissors'){
