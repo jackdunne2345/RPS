@@ -3,6 +3,59 @@
 let playerScore=0
 let aiScore=0
 let difficulty=5
+let initialLevel=true;
+const playerHandSymbols = new Map();
+playerHandSymbols.set('rock', `
+    _______
+---'   ____)
+      (_____)
+      (_____)
+      (____)
+---.__(___)
+`);
+playerHandSymbols.set('paper', `
+     _______
+---'    ____)____
+           ______)
+          _______)
+         _______)
+---.__________)
+`);
+playerHandSymbols.set('scissors', `
+    _______
+---'   ____)____
+          ______)
+       __________)
+      (____)
+---.__(___)
+`
+);
+const aiHandSymbols = new Map();
+aiHandSymbols.set('rock', `
+     _______
+   (____   '---
+  (_____)
+ (_____)
+  (____)
+   (___)__.---
+`);
+aiHandSymbols.set('paper', `
+       _______
+  ____(____    '---
+ (______
+(_______
+ (_______
+  (___________.---
+`);
+aiHandSymbols.set('scissors', `
+      _______
+ ____(____    '---
+(______
+(__________
+     (____)
+      (___)__.---
+`
+);
 
 
 
@@ -19,12 +72,16 @@ function start(){
         difficulty-=5
         if(difficulty<5){
             difficulty=5;
-            console.log(`how on earth can you not eat this lvl!`)
+            console.log(`how on earth can you not beat this lvl!`)
         }
         else console.log(`lose message, back you go to lvl ${difficulty/5}`)
         
     }
-    console.log(`LEVEL ${difficulty/5}`)
+    if(initialLevel){
+        console.log(`LEVEL ${difficulty/5}`)
+        initialLevel=false
+    }
+    
     playerEntry()
 }
 function playerEntry(){
@@ -64,7 +121,7 @@ function play_round (difficulty,playerChoice){
                     aiSelection='rock'
                 break;
             } 
-            console.log(`ai wins ${playerChoice}<${aiSelection}`) 
+            console.log(`ai wins ${playerHandSymbols.get(playerChoice)}<${aiHandSymbols.get(aiSelection)}`) 
             aiScore++
             console.log(`Player: ${playerScore}, AI:${aiScore}`) 
         break;
@@ -73,7 +130,7 @@ function play_round (difficulty,playerChoice){
             console.log(drawOrLose)
             if(drawOrLose>77){
                 aiSelection=playerChoice
-                console.log(`we have a draw ${playerChoice}=${aiSelection}`)
+                console.log(`we have a draw ${playerHandSymbols.get(playerChoice)}=${aiHandSymbols.get(aiSelection)}`)
                 console.log(`Player: ${playerScore}, AI:${aiScore}`)
             }else{
                 switch(playerChoice){
@@ -87,7 +144,7 @@ function play_round (difficulty,playerChoice){
                         aiSelection='paper'
                     break;
                 } 
-                console.log(`player wins ${playerChoice}>${aiSelection}`);
+                console.log(`player wins ${playerHandSymbols.get(playerChoice)}>${aiHandSymbols.get(aiSelection)}`);
                  playerScore++
                 console.log(`Player: ${playerScore}, AI:${aiScore}`)
             }
