@@ -2,8 +2,8 @@
 
 let playerScore=0
 let aiScore=0
-let difficulty=5
 const difficultyIncrease=10
+let difficulty=difficultyIncrease
 let initialLevel=true;
 const playerHandSymbols = new Map();
 playerHandSymbols.set('rock', `
@@ -59,32 +59,37 @@ aiHandSymbols.set('scissors', `
 );
 
 
-
+//STARTS GAME
 function start(){
+    //checks if any one has won the best of 5
     if(playerScore>2){
         aiScore=0
         playerScore=0
         difficulty+=difficultyIncrease
         if(difficulty>100)difficulty=100
-        console.log(`win message , you are on lvl ${difficulty/difficultyIncrease}`)
+        console.log(`win message , you are on level ${difficulty/difficultyIncrease}`)
+        console.log(`LEVEL ${difficulty/difficultyIncrease} Fight!`)
     }else if(aiScore>2){
         aiScore=0
         playerScore=0
         difficulty-=difficultyIncrease
-        if(difficulty<5){
-            difficulty=5;
-            console.log(`how on earth can you not beat this lvl!`)
+        if(difficulty<difficultyIncrease){
+            difficulty=difficultyIncrease;
+            initialLevel=true
+            console.log(`how on earth can you not beat this level!`)
         }
-        else console.log(`lose message, back you go to lvl ${difficulty/difficultyIncrease}`)
+        else console.log(`lose message, back you go to level ${difficulty/difficultyIncrease}`)
         
     }
+    //if on level one does some different logic to display correct level ***THIS COULD GO does nothing lol ***
     if(initialLevel){
-        console.log(`LEVEL ${difficulty/5}`)
+        console.log(`LEVEL ${difficulty/difficultyIncrease} Fight!`)
         initialLevel=false
     }
     
     playerEntry()
 }
+//takes an input on a while loop stops when it is valid
 function playerEntry(){
     let isValid=false
     let playerSelection
@@ -103,12 +108,18 @@ function playerEntry(){
     play_round(difficulty,playerSelection)
 
 }
+//displays the hand symbols and handles the winning and losing logic
 function play_round (difficulty,playerChoice){
     let aiWin=false;
     let aiSelection='rock'
+    //generates a random number between 1-100 inclusive
     const randomNumber = Math.floor(Math.random() * 100) + 1;
-   
+   // if the number is less than or equal to the diffuclty the ai wins. 
+   // so the higher the difficulty the lower the chance you have to win. 
+   // works out at roughly 1% per unit of diffculty as the number selected isnt
+   // entirly random
     if(randomNumber<=difficulty) aiWin=true
+    // the logic for the display of the winning hand symbol for the ai
     switch(aiWin){
         case true:
             switch(playerChoice){
@@ -150,6 +161,7 @@ function play_round (difficulty,playerChoice){
             }
         break;
     }
+    //starts over!!
    start()
 
 }
