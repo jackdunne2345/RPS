@@ -1,5 +1,3 @@
-
-
 let playerScore=0
 let aiScore=0
 const difficultyIncrease=10
@@ -59,6 +57,7 @@ aiHandSymbols.set('scissors', `
 );
 
 
+
 //STARTS GAME
 const start=()=>{
     //checks if any one has won the best of 5
@@ -79,38 +78,35 @@ const start=()=>{
             console.log(`how on earth can you not beat this level!`)
         }
         else console.log(`lose message, back you go to level ${difficulty/difficultyIncrease}`)
-        
     }
-    //if on level one does some different logic to display correct level ***THIS COULD GO does nothing lol ***
+    // if on level one does some different logic to display correct level ***THIS COULD GO does nothing lol ***
     if(initialLevel){
         console.log(`LEVEL ${difficulty/difficultyIncrease} Fight!`)
         initialLevel=false
     }
     
-    play_round(difficulty,playerEntry())
+    play_round(difficulty,player_Entry())
 }
 //takes an input on a while loop stops when it is valid
-const playerEntry=()=>{
+const player_Entry=()=>{
     let isValid=false
     let playerSelection
     while(!isValid){
         //NEED TO HANDLE NO ENTRY 
-        const playerInput=prompt("please type either rock paper or scissors")
-    
+        const playerInput=prompt("please type either rock paper or scissors");
         const lowerCaseInput=playerInput.toLowerCase()
         if(typeof lowerCaseInput==='string' ){  
             if(lowerCaseInput==='rock'||lowerCaseInput==='paper'||lowerCaseInput==='scissors'){
                 playerSelection=lowerCaseInput
                 isValid=true
             }else{
-                alert(`not a valid input`)    
+                alert(`not a valid input`)
             }
         }
     }
     return playerSelection
-    
-
 }
+
 //displays the hand symbols and handles the winning and losing logic
 const play_round= (difficulty,playerChoice)=>{
     let aiWin=false;
@@ -166,7 +162,6 @@ const play_round= (difficulty,playerChoice)=>{
     }
     //starts over!!
    start()
-
 }
 
 
