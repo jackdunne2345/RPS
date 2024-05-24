@@ -3,25 +3,30 @@ let aiScore=0
 const difficultyIncrease=10
 let difficulty=difficultyIncrease
 let initialLevel=true;
-const playerHandSymbols = new Map();
-
-playerHandSymbols.set('rock', `
+let play = false
+const playerHandSymbols = new Map([
+    ['rock', 
+    `
     _______
 ---'   ____)
       (_____)
       (_____)
       (____)
 ---.__(___)
-`);
-playerHandSymbols.set('paper', `
-     _______
----'    ____)____
-           ______)
-          _______)
+`
+    ],
+    ['paper', 
+    `
+    _______
+---'   ____)____
+          ______)
          _______)
+        _______)
 ---.__________)
-`);
-playerHandSymbols.set('scissors', `
+`
+    ],
+    ['scissors', 
+    `
     _______
 ---'   ____)____
           ______)
@@ -29,67 +34,80 @@ playerHandSymbols.set('scissors', `
       (____)
 ---.__(___)
 `
-);
-const aiHandSymbols = new Map();
-aiHandSymbols.set('rock', `
+    ]
+]);
+
+
+
+const aiHandSymbols = new Map([
+    ['rock', 
+    `
     _______
    (____   '---
   (_____)
   (_____)
    (____)
     (___)__.---
-`);
-aiHandSymbols.set('paper', `
-       _______
-  ____(____    '---
+`
+    ],
+    ['paper', 
+    `
+        _______
+   ____(____    '---
  (______
 (_______
  (_______
   (___________.---
-`);
-aiHandSymbols.set('scissors', `
-      _______
- ____(____    '---
+`
+    ],
+    ['scissors', 
+    `
+        _______
+  ____(____    '---
 (______
 (__________
      (____)
       (___)__.---
 `
-);
-
-
+    ]
+]);
 
 //STARTS GAME
 const game = () =>{
-    //checks if any one has won the best of 5
-    if(playerScore>2){
+    if(!play){
+        difficulty=difficultyIncrease
         aiScore=0
         playerScore=0
-        difficulty+=difficultyIncrease
-        if(difficulty>100)difficulty=100
-        console.log(`win message , you are on level ${difficulty/difficultyIncrease}`)
-        console.log(`LEVEL ${difficulty/difficultyIncrease} Fight!`)
-    }else if(aiScore>2){
-        aiScore=0
-        playerScore=0
-        difficulty-=difficultyIncrease
-        if(difficulty<difficultyIncrease){
-            difficulty=difficultyIncrease;
-            initialLevel=true
-            console.log(`how on earth can you not beat this level!`)
+        play =confirm(`Are you ready to play?`)}
+    while(play){
+        if(playerScore>2){
+            aiScore=0
+            playerScore=0
+            difficulty+=difficultyIncrease
+            if(difficulty>100)difficulty=100
+            console.log(`win message , you are on level ${difficulty/difficultyIncrease}`)
+            console.log(`LEVEL ${difficulty/difficultyIncrease} Fight!`)
+        }else if(aiScore>2){
+            aiScore=0
+            playerScore=0
+            difficulty-=difficultyIncrease
+            if(difficulty<difficultyIncrease){
+                difficulty=difficultyIncrease;
+                initialLevel=true
+                console.log(`how on earth can you not beat this level!`)
+            }
+            else console.log(`lose message, back you go to level ${difficulty/difficultyIncrease}`)
         }
-        else console.log(`lose message, back you go to level ${difficulty/difficultyIncrease}`)
+        // if on level one does some different logic to display correct level ***THIS COULD GO does nothing lol ***
+        if(initialLevel){
+            console.log(`LEVEL ${difficulty/difficultyIncrease} Fight!`)
+            initialLevel=false
+        }
+        let playerSelection=player_Entry()
+        let dialouge= play_round(difficulty,playerSelection)
+        dialouge&&console.log(dialouge)
+        dialouge&&console.log(`Player: ${playerScore}, AI:${aiScore}`) 
     }
-    // if on level one does some different logic to display correct level ***THIS COULD GO does nothing lol ***
-    if(initialLevel){
-        console.log(`LEVEL ${difficulty/difficultyIncrease} Fight!`)
-        initialLevel=false
-    }
-    let playerSelection=player_Entry()
-    let dialouge= play_round(difficulty,playerSelection)
-    console.log(dialouge)
-    console.log(`Player: ${playerScore}, AI:${aiScore}`) 
-
 }
 //takes an input on a while loop stops when it is valid
 const player_Entry=()=>{
@@ -98,10 +116,20 @@ const player_Entry=()=>{
     while(!isValid){
         //NEED TO HANDLE NO ENTRY 
         const playerInput=prompt("please type either rock paper or scissors");
-        const lowerCaseInput=playerInput.toLowerCase()
-        if(typeof lowerCaseInput==='string' ){  
-            (lowerCaseInput==='rock'||lowerCaseInput==='paper'||lowerCaseInput==='scissors') ?()=>{ playerSelection=lowerCaseInput
-                isValid=true}:alert(`not a valid input`)
+        if(playerInput===null){
+            alert("It's ok to quit if you're a chicken \u{1F414}")
+            console.log(`you made it to Level ${difficulty/difficultyIncrease} `)
+            play=false
+            return null
+        }else{
+            const lowerCaseInput=playerInput.toLowerCase()
+            if(typeof lowerCaseInput==='string' ){  
+                if(lowerCaseInput==='rock'||lowerCaseInput==='paper'||lowerCaseInput==='scissors'){ 
+                    playerSelection=lowerCaseInput
+                    isValid=true
+                }
+                else alert(`not a valid input`)    
+            }
         }
     }
     return playerSelection
@@ -109,6 +137,7 @@ const player_Entry=()=>{
 
 //displays the hand symbols and handles the winning and losing logic
 const play_round= (difficulty,playerChoice)=>{
+    if(playerChoice===null) return null
     let aiWin=false;
     let aiSelection='rock'
     //generates a random number between 1-100 inclusive
@@ -133,8 +162,6 @@ const play_round= (difficulty,playerChoice)=>{
             } 
             aiScore++
             return `ai wins ${playerHandSymbols.get(playerChoice)}<${aiHandSymbols.get(aiSelection)}`
-            
-            
         }
         else{
             const drawOrLose = Math.floor(Math.random() * 100) + 1;
@@ -158,9 +185,6 @@ const play_round= (difficulty,playerChoice)=>{
                 return `player wins ${playerHandSymbols.get(playerChoice)}>${aiHandSymbols.get(aiSelection)}`
             }
         }
-    
-    //starts over!!
-   game()
 }
 
 
